@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Page Title</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Favorite Athlete Gif</h1>
+    
+    <div id="buttons-view"></div>
+
+    <div id="gif-view"></div>
+
+    <form id="athlete-form">
+        <label for="athlete-input">Add your favorite Athlete:</label>
+        <input type="text" id="athlete-input">
+        <br>
+        <!-- Button triggers new movie to be added -->
+        <input id="add-athlete" type="submit" value="Submit Athlete">
+      </form>   
+    
+      
+<script type="text/javascript">
+
+
+// here we set the initial array of athletes
+    var athletes = ["Kobe Bryant","Dak Prescott", "Lonzo Ball"];
+    
+// creating a function here to re-render the html for proper content
+function displayAthletes() {
+    var athlete = $(this).attr("data-name");
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + athlete + "&api_key=ANgYIpP3oxmWzzQfeuPmD4JrM0PnXqFX&limit=10";
+
+// creating an ajax call for the athlete being clicked
+$.ajax({
+    url: queryURL,
+    method: "GET"
+}).then(function(response) {
+   
+   var results = respnse.data;
+
+
+    var athleteDiv = $("<div class='athlete'>");
+    var athleteImage = $("<img>");
+    var still = results.images.downsized_still.url;
+    var down = results.images.downsized.url;
+
+   $("#gif-view").prepend(still)
+
+
+
+});
+
+function renderButtons() {
+    $("#buttons-view").empty();
+
+    for(var i = 0; i < athletes.length;i++) {
+        var a = $("<button>");
+        a.addClass("athlete-btn");
+        a.attr("data-name", athletes[i]);
+        a.text(athletes[i]);
+        $("#buttons-view").append(a);
+    }
+}
+
+$("#add-athlete").on("click", function(event) {
+
+    var athlete = $("athlete-input").val().trim();
+
+    athelets.push(athlete);
+
+    renderButtons();
+});
+
+}
+
+$(document).on("click", ".athlete-btn", displayAthletes);
+
+renderButtons();
+
+      
+</script>
+
+
+    </div>
+</body>
+</html>
